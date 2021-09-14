@@ -9,15 +9,17 @@ var Weapon = preload("res://Weapon.tscn")
 var Weapons = null
 
 func _ready():
-	max_range = get_viewport().size
+	max_range = get_viewport().size #range of game window for wrap
 
 func _physics_process(_delta):
-	
+	var pos = get_viewport().get_mouse_position()
+	look_at(pos)
+	rotation_degrees += 90 #turn ship to mouse otherwise it will be off by 90
 
-	velocity += get_input()*acc_amount
+	velocity += get_input()*acc_amount #key * acc
 
 	position += velocity
-	position.x = wrapf(position.x,min_range.x,max_range.x)
+	position.x = wrapf(position.x,min_range.x,max_range.x) #wrap if edge of screen
 	position.y = wrapf(position.y,min_range.y,max_range.y)
 
 
@@ -32,4 +34,13 @@ func _physics_process(_delta):
 		
 
 func get_input():
-	return Vector2.ZERO
+	var input_dir = Vector2(0,0)
+	if Input.is_action_pressed("forward"):
+		input_dir.y -= 1
+	if Input.is_action_pressed("back"):
+		input_dir.y += 1
+	if Input.is_action_pressed("left"):
+		input_dir.x -= 1
+	if Input.is_action_pressed("right"):
+		input_dir.x += 1
+	return input_dir.rotated(rotation)

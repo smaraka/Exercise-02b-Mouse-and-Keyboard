@@ -14,3 +14,4 @@ func _physics_process(_delta):
 	position += velocity.rotated(rotation)
 	if position.x < min_range.x or position.y < min_range.y or position.x > max_range.x or position.y > max_range.y:
 		queue_free()
+ #delete
